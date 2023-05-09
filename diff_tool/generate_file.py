@@ -13,7 +13,7 @@ class FileGenerator:
         self._temp_content = []
 
 
-    def _build_the_content(self, mix_n_times=3):
+    def _build_the_content(self):
         rng = random.randrange(0, len(self._template_1450))
         self._temp_content.append(self._template_1450[rng])
 
@@ -31,8 +31,8 @@ def main_func():
     start = time.time()
 
     gen = FileGenerator()
-    gen.new_file('file1.txt', rows_nr=100000)
-    gen.new_file('file2.txt', rows_nr=100000)
+    gen.new_file('file1.txt', rows_nr=10000)
+    gen.new_file('file2.txt', rows_nr=10000)
 
     end = time.time() - start
     print(f'Finished in - {end}s')
