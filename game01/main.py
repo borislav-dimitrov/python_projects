@@ -1,5 +1,5 @@
-def main_func():
+def main():
     print('Hello World!')
 
 if __name__ == '__main__':
-    main_func()
+    main()
