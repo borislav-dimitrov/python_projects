@@ -1,6 +1,9 @@
 import pygame
 import sys
+import time
 from .surface_engine import SurfaceEngine
+from managers.game_manager import GameManager
+from managers.scene_manager import SceneManager
 
 
 class GameEngine:
@@ -23,8 +26,13 @@ class GameEngine:
         # Surface
         self.surface_engine = SurfaceEngine(self.pygame_instance, self)
 
+        # Managers
+        self.game_manager = None
+        self.scene_manager = None
+
     def start(self):
         '''Start the game'''
+        self._init_managers()
         self.game_loop()
 
     def game_loop(self) -> None:
@@ -34,8 +42,8 @@ class GameEngine:
                 if event.type == self.pygame_instance.QUIT:
                     self._on_exit()
 
-            # Update screen content
-            self.surface_engine.update_screen()
+            # Update scene
+            self.scene_manager.update_scene()
 
             self._update()
 
@@ -53,3 +61,8 @@ class GameEngine:
         self.pygame_instance.display.update()
         # Set max fps
         self.clock.tick(self.fps)
+
+    def _init_managers(self):
+        '''Initialise all the managers'''
+        self.game_manager = GameManager(self)
+        self.scene_manager = SceneManager(self)

@@ -1,9 +1,6 @@
-import engines.engine_settings as e_settings
-
-
-class UIText:
+class UITextPrefab:
     def __init__(self, pygame_instance, text, font_type=None, font_size=50, font_color='white',
-                 anti_aliasing=False, bold=False, layer=e_settings.LAYER_MAP[e_settings.UI_1]):
+                 anti_aliasing=False, bold=False):
         self.pygame_instance = pygame_instance
 
         # Settings
@@ -15,3 +12,11 @@ class UIText:
 
         # Surface[the text picture] is being displayed on the screen
         self.surface = self.font.render(self.text, self.anti_aliasing, self.font_color)
+
+    @property
+    def width(self):
+        return self.surface.get_width()
+
+    @property
+    def height(self):
+        return self.surface.get_height()
