@@ -1,0 +1,25 @@
+GROUND = 'GROUND'
+DECORATIONS_1 = 'DECORATIONS[1]'
+DECORATIONS_2 = 'DECORATIONS[2]'
+DECORATIONS_3 = 'DECORATIONS[3]'
+DECORATIONS_4 = 'DECORATIONS[4]'
+DECORATIONS_5 = 'DECORATIONS[5]'
+ACTORS = 'ACTORS'
+BUILDINGS = 'BUILDINGS'
+COLLISIONS = 'COLLISIONS'
+UI_1 = 'UI[1]'
+UI_2 = 'UI[2]'
+
+LAYER_MAP = {
+    GROUND: 0,
+    DECORATIONS_1: 1,
+    DECORATIONS_2: 2,
+    DECORATIONS_3: 3,
+    ACTORS: 4,
+    DECORATIONS_4: 5,
+    DECORATIONS_5: 6,
+    BUILDINGS: 7,
+    COLLISIONS: 8,  # may be changed[doesn't matter] idk how that works yet in pygame
+    UI_1: 9,  # HUD, Texts, etc.
+    UI_2: 10,  # skill tree, char stats, etc.
+}

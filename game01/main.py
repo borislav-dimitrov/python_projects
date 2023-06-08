@@ -1,5 +1,10 @@
+from engines.game_engine import GameEngine
+
+
 def main():
-    print('Hello World!')
+    game = GameEngine(title='My Game')
+    game.start()
+
 
 if __name__ == '__main__':
     main()
