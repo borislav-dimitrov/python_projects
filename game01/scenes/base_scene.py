@@ -5,8 +5,16 @@ class BaseScene:
         self.pygame_instance = self.game_engine.pygame_instance
         self.main_surface = self.pygame_instance.display.set_mode(self.game_engine.resolution)
 
+        self.scene_objects = []
+        self.interractables = []
+
+    def instantiate_scene_objects(self):
+        pass
+
     def update_scene(self):
         '''Update the scene'''
+        for obj in self.scene_objects:
+            obj.update(self.main_surface)
         self.update()
         self.update_late()
         self.update_screen()
@@ -89,4 +97,4 @@ class BaseScene:
 
     def leave_scene(self):
         '''Things to do when leaving the scene'''
-        pass
+        self.main_surface.fill('black')

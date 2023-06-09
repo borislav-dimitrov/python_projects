@@ -1,7 +1,9 @@
 class UITextPrefab:
-    def __init__(self, pygame_instance, text, font_type=None, font_size=50, font_color='white',
+    def __init__(self, pygame_instance, x, y, text, font_type=None, font_size=50, font_color='white',
                  anti_aliasing=False, bold=False):
         self.pygame_instance = pygame_instance
+        self.x = x
+        self.y = y
 
         # Settings
         self.font = self.pygame_instance.font.Font(font_type, font_size)
@@ -14,9 +16,13 @@ class UITextPrefab:
         self.surface = self.font.render(self.text, self.anti_aliasing, self.font_color)
 
     @property
-    def width(self):
+    def text_width(self):
         return self.surface.get_width()
 
     @property
-    def height(self):
+    def text_height(self):
         return self.surface.get_height()
+
+    def update(self, surface):
+        '''Called each frame in the scene to update the widget'''
+        pass

@@ -1,5 +1,5 @@
 class ActorPrefab:
-    def __init__(self, pygame_instance, sprite_path, name):
+    def __init__(self, pygame_instance, sprite_path):
         self.pygame_instance = pygame_instance
         self.sprite = sprite_path
 
@@ -13,3 +13,7 @@ class ActorPrefab:
     @property
     def height(self):
         return self.surface.get_height()
+
+    def update(self, surface):
+        '''Called each frame in the scene to update the widget'''
+        pass

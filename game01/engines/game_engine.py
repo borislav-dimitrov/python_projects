@@ -38,9 +38,7 @@ class GameEngine:
     def game_loop(self) -> None:
         '''The main game loop'''
         while True:
-            for event in self.pygame_instance.event.get():
-                if event.type == self.pygame_instance.QUIT:
-                    self._on_exit()
+            self._handle_pygame_events()
 
             # Update scene
             self.scene_manager.update_scene()
@@ -66,3 +64,22 @@ class GameEngine:
         '''Initialise all the managers'''
         self.game_manager = GameManager(self)
         self.scene_manager = SceneManager(self)
+
+    def _handle_pygame_events(self):
+        left_click = 1
+        right_click = 2
+        middle_click = 3
+        scroll_up = 4
+        scroll_down = 5
+
+        mouse_x, mouse_y = self.pygame_instance.mouse.get_pos()
+
+        for event in self.pygame_instance.event.get():
+            if event.type == self.pygame_instance.QUIT:
+                self._on_exit()
+            elif event.type == self.pygame_instance.MOUSEBUTTONDOWN:
+                button = event.button
+                for obj in self.scene_manager.active_scene.interractables:
+                    if button == left_click:
+                        if obj['x1'] <= mouse_x <= obj['x2'] and obj['y1'] <= mouse_y <= obj['y2']:
+                            obj['object'].on_click()

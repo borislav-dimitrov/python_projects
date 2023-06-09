@@ -21,6 +21,9 @@ class SceneManager:
         '''Change the current scene'''
         scene = self.get_scene(new_scene)
         if scene and self.active_scene != scene:
+            if self.active_scene:
+                self.active_scene.leave_scene()
+            print(f'Changing scene to {new_scene}.')
             self.active_scene = scene
 
     def get_scene(self, scene_name):

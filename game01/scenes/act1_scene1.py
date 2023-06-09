@@ -6,13 +6,14 @@ class Act1Scene1(BaseScene):
         super().__init__(game_engine)
         self.scene_name = name
 
-        self.title = UITextPrefab(pygame_instance=self.pygame_instance, text='Act 1 Scene 1')
+        self.title = UITextPrefab(pygame_instance=self.pygame_instance, x=0, y=50, text='Act 1 Scene 1')
+        self.title.x = self.game_engine.game_width / 2 - self.title.text_width / 2
 
     def update_ui_1(self):
         pass
 
     def update_ui_2(self):
-        self.main_surface.blit(self.title.surface, (self.game_engine.game_width / 2 - self.title.width / 2, 50))
+        self.main_surface.blit(self.title.surface, (self.title.x, self.title.y))
 
 
 
