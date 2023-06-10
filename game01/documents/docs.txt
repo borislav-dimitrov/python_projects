@@ -1,0 +1,299 @@
+============================================================================================================================================
+Combat:
+	======================================================================
+		All:
+			Offense:
+				1. Chance to double hit/cast ?? [comes from item mod]
+			Defense:
+				1. Miss [when attacker has not enough Attack Rating (i.e. he is lower level)]
+				2. Life Regen
+				3. Mana Regen
+				4. Life Per Kill
+				5. Mana Per Kill
+				6. Defense [reduce chance to be hit]
+				7. Resistances [reduce elemental damage]
+			Misc:
+				1. Faster run walk
+	======================================================================
+		Melee:
+			Offense:
+				1. Crit - 2x dmg
+				2. Added elemental damage [from gems/etc]			
+				3. Increased Attack Speed
+				4. Melee Splash
+				5. Attack Rating
+			Defense:
+				1. Block [when wearing shields]
+				2. Slow Enemy by x% [slow attacked enemy attack/cast speed (comes from item mod)]
+	======================================================================
+		Ranged [bow/throwing]:
+			Offense:
+				1. Crit - 2x dmg
+				2. Added elemental damage [from gems/etc]			
+				3. Increased Attack Speed
+				4. Attack Rating
+				5. Multy Shot (from skill only)
+			Defense:
+				1. Avoid [while moving (from skill only)]
+				2. Evade [while attacking (from skill only)]
+				3. Slow Enemy by x% [slow attacked enemy attack/cast speed (comes from item mod)]
+	======================================================================
+		Ranged [caster]:
+			Offense:
+				1. Faster Cast Rate
+				2. Does elemental damage [frost, fire, etc.]
+				3. - Enemy resistance
+				4. A bit higher base damage than the phys builds in general
+			Defense:
+				1. Block [when wearing shields]
+				2. Iceblock spell ?? [to a specific class]
+	======================================================================
+		Other:
+			Proectiles [shoot/dodjge]
+			Zone bonuses/penalties [like YuGiOh field cards]
+			Summoners Minions [phys/caster] inherit from Ranged and Caster properties respectively
+			Elemental shields for some caster class like in wow for the mage (frost/fire/arcane shield)
+			Aggro range - when entered start chasing/shooting/casting the player to attack him.
+			Attack/Cast range - when the enemy is available to attack/shoot/cast
+	======================================================================
+		For beginning:
+			Basic attack
+			Defense [reduce damage]
+
+============================================================================================================================================
+Loot:
+	======================================================================
+	Monsters:
+		1. Define what type the item will be [jewelry/item/charm/potion/etc]
+		2. Define what rarity the item will be [normal/magic/rare/set/uniq/etc] - influenced by magic find
+		3. Define what quality the item will be [0-20% increasing the def/dmg for wpns/armrs only]
+		4. Define how many mods to roll
+		5. Define what mods to roll
+	======================================================================
+	Bosses:
+		Same like monsters but with higher chances
+	======================================================================
+	Chests:
+		Same lile monsters but with lower chances
+		Maybe have super chests?
+	======================================================================
+	Items will drop on the ground and can be seen like in diablo/path of exile [permanently or via key press hold]
+	Items will have sockets [depending on the item]
+	Will not have runewords but instead will have some crafting system to modify the item stats or craft a whole new item
+	ItemClasses - Equipment, Jewelry, Charm, Misc, Money
+	ItemTypes - [
+		Equipment[
+			Weapon[Sword, Giant Sword, Axe, Giant Axe],
+			BodyArmor[Rusty Armor, Heavy Armor, Scholar Armor,Mage Armor]
+			Boots[Ripped Boots, Leather Boots],
+			Gloves[Ripped Gloves, Leather Gloves],
+			Belts[Ripped Belt, Leather Belt],
+		],
+		Jewelry[
+			Amulets[Amulet],
+			Rings[Ring],
+			Jewels[Jewel]
+			Gems[Ember Gem, Cryo Gem, Toxic Gem, Electric Gem]
+		],
+		Charm[Charm],
+		Misc[
+			Potions[
+				Health Potion[t1(1-15lvl), t2(10-25lvl), t3(20-35lvl), t4(30-45lvl), t5(40lvl+)],
+				Mana Potion[t1(1-15lvl), t2(10-25lvl), t3(20-35lvl), t4(30-45lvl), t5(40lvl+)],
+				Dual(hp+mp) Potion[t1(1-15lvl), t2(10-25lvl), t3(20-35lvl), t4(30-45lvl), t5(40lvl+)],
+				Potion of Speed[increase % ms for x sec],
+				Antidote[cure poison],
+				// Questioning these below
+				Cryo Potion[add x cryo damage to attacks and increase cryo resistance for x sec],
+				Ember Potion[-||-],
+				Toxic Potion[-||-],
+				Electric Potion[-||-],
+			],
+			Scrolls[ID, TP],
+			Keys[Key]
+		],
+	]
+
+============================================================================================================================================
+Skills:
+	Diablo like skill tree system
+
+============================================================================================================================================
+Inventory:
+	1. Fixed inventory space
+	2. Weight system [every item will have weight but will take 1 box from the inventory and after certain treshold player will receive penalty for wearing too much]
+	3. max gold [player parameter]
+	4. max weight [player parameter]
+	5. slots [helm, neck, chest, gloves, belt, boots, ring, ring, main hand, off hand]
+
+Stash:
+	1. 5 stash pages [1 personal / 4 shared between characters]
+	2. able to stash gold
+	3. consider stackable misc[scrolls/etc] items [in stash only]
+============================================================================================================================================
+Item rolling:
+	StartSpawningItem(mobOrChest, mobOrChestLvl):
+		// 1. Take in account the no-drop chance
+			if (mobOrChest not in ["Boss", "SuperChest"])
+				roll = Rand.Int(0, 100)
+				if (roll <= 50)
+					// no-drop
+					return null
+		// 2. Define ammount of dropped items
+			droppedItemsAmt = Rand.Int(1, mobOrChest.maxLootTableCount)
+
+			loot = []
+			for i in range(droppedItemsAmt)
+				// 1. Define ItemClass
+					itemClass = Rand.Int(0, mobOrChest.lootTablePossibleItemClassDrops)
+				// 2. Define ItemType
+					itemType = Rand.Int(0, itemClass.itemType.count())
+				// 3. Define iLvl
+					iLvl = mobOrChestLvl
+				// 4. Define rarity (normal, magic, rare) //, uniq, set)
+				if itemClass in ["Equipment", "Jewelry"]
+					mobOrChest.chanceForNormalItems = 87
+					mobOrChest.chanceForMagicItems = 10
+					mobOrChest.chanceForRareItems = 3
+
+					// Verify the GameObject percentages
+					if ((mobOrChest.chanceForNormalItems + mobOrChest.chanceForNormalItems + mobOrChest.chanceForNormalItems) != 100)
+						throw new System.Exception($"{mobOrChest.chanceForNormalItems} + {mobOrChest.chanceForNormalItems} + {mobOrChest.chanceForNormalItems} is not equal to 100!")
+
+					roll = Random.Int(0, 100)
+					// TODO - take in account uniqs and sets from the same itemType later
+					if (itemClass == "Equipment")
+						if (roll >= 100 - mobOrChest.chanceForRareItems)
+							rarity = Rare
+						elif (roll >= 100 - (mobOrChest.chanceForMagicItems + mobOrChest.chanceForRareItems))
+							rarity = Magic
+						else
+							rarity = normal
+					elf (itemClass == "Jewelry")
+						if (roll >= 100 - mobOrChest.chanceForRareItems)
+							rarity = Rare
+						else
+							rarity = Magic
+				elif (itemClass == Charm)
+					rarity = Magic
+				elif (itemClass == Misc)
+					rarity = Normal
+				elif (itemClass == Money)
+					rarity = Normal
+
+				loot.Add(RollXItem(itemType, iLvl, rarity))
+		return loot
+
+	RollXItem (itemType, iLvl, rarity):
+		// 1. Define prefix/suffix ammount
+		prefixAmt = 0
+		suffixAmt = 0
+
+		if (itemType.itemClass == "Equipment")
+			if (iLvl >= 45)
+				if (qualiy == "magic")
+					prefixAmt = 3
+					suffixAmt = 4
+				elif (qualiy == "rare")
+					prefixAmt = 4
+					suffixAmt = 4
+				else
+					// quality == normal
+					pass
+			elif (iLvl >= 15)
+				if (qualiy == "magic")
+					prefixAmt = 2
+					suffixAmt = 3
+				elif (qualiy == "rare")
+					prefixAmt = 3
+					suffixAmt = 3
+				else
+					// quality == normal
+					pass
+			else
+				// iLvl 0-14
+				if (qualiy == "magic")
+					prefixAmt = 1
+					suffixAmt = 2
+				elif (qualiy == "rare")
+					prefixAmt = 2
+					suffixAmt = 2
+				else
+					// quality == normal
+					pass
+			
+			if (itemClass is 2h)
+				prefix *= 2
+				suffix *= 2
+		elif (itemType.itemClass == "Jewelry")
+			if (iLvl >= 45)
+				if (qualiy == "magic")
+					prefixAmt = 3
+					suffixAmt = 3
+				elif
+					// qualiy == "rare"
+					prefixAmt = 3
+					suffixAmt = 4
+			elif (iLvl >= 15)
+				if (qualiy == "magic")
+					prefixAmt = 2
+					suffixAmt = 2
+				elif
+					// qualiy == "rare"
+					prefixAmt = 2
+					suffixAmt = 3
+			else
+				// iLvl 0-14
+				if (qualiy == "magic")
+					prefixAmt = 1
+					suffixAmt = 1
+				else
+					// qualiy == "rare"
+					prefixAmt = 1
+					suffixAmt = 2
+		elif (itemType.itemClass == "Misc")
+			// Misc items will have static prefix
+			// ... hp potions - heal hp ...
+			// etc..
+		else
+			// itemType.itemClass == "Charm"
+			if (iLvl >= 45)
+				prefixAmt = 1
+				suffixAmt = 2
+			elif (iLvl >= 15)
+				prefixAmt = 1
+				suffixAmt = 1
+			else
+				// iLvl 0-14
+				prefixAmt = 1
+
+		// 2. From prefix/suffix ammount roll random number 
+		// to define the final prefix/suffix ammount 
+		// (ie. it might be able to have 2 prefixes but also may roll with just 1)
+
+		finalPrefixAmt = Random.Int(1, prefixAmt)
+		finalSuffixAmt = Random.Int(1, suffixAmt)
+
+		// 3. Poll the final ammount of prefixes/suffixes from the existing and spawn the item
+		return SpawnItem(itemType, iLvl, rarity, finalPrefixAmt, finalSuffixAmt)
+
+	SpawnItem(itemType, iLvl, rarity, finalPrefixAmt, finalSuffixAmt):
+		newItem = null
+
+		if (itemType.itemClass in [Equipment, Jewelry, Charm])
+			// Make method that creates each of the itemtypes and poll the specified ammount of
+			// their according prefixes/suffxies for them
+			newItem = ...
+		if (itemType.itemClass == Misc)
+			// Have static methods for each misc item since they are always the same
+			newItem = ...
+
+		return newItem
+
+
+============================================================================================================================================
+TODO:
+	1. Add weight property to baseitem
+============================================================================================================================================
+BUGS:
+	1. Player is sometimes sliding when spam moving while attacking
