@@ -1,0 +1,37 @@
+node1 {
+    node11 {
+        node111 {
+            alabala = 12344213
+            tralala = 12011203
+        }
+        node112 {
+            alabala = 12322313
+            tralala = 12055403
+        }
+        node113 {
+            alabala = 12133213
+            tralala = 12377203
+        }
+    }
+    node12 {
+        node121 {
+            alabala = 12131443
+            tralala = 12567333
+        }
+    }
+    node13 {
+        alabala = 12344113
+        tralala = 12896773
+    }
+    node14 {
+        node141 {
+            alabala = 12411113
+            tralala = 12228703
+        }
+        node142 {
+            alabala = 12358013
+            tralala = 12195303
+            tralala = 12195403
+        }
+    }
+}

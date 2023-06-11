@@ -26,8 +26,7 @@
 from __future__ import print_function # Py2 compat
 from collections import namedtuple
 import sys
-import time
-import datetime
+from utils import timeit, load_files
 
 # These define the structure of the history, and correspond to diff output with
 # lines that start with a space, a + and a - respectively.
@@ -111,34 +110,83 @@ def myers_diff(a_lines, b_lines):
 
     assert False, 'Could not find edit script'
 
+def diff2(e, f, i=0, j=0):
+  #  Documented at http://blog.robertelder.org/diff-algorithm/
+  N,M,L,Z = len(e),len(f),len(e)+len(f),2*min(len(e),len(f))+2
+  if N > 0 and M > 0:
+    w,g,p = N-M,[0]*Z,[0]*Z
+    for h in range(0, (L//2+(L%2!=0))+1):
+      for r in range(0, 2):
+        c,d,o,m = (g,p,1,1) if r==0 else (p,g,0,-1)
+        for k in range(-(h-2*max(0,h-M)), h-2*max(0,h-N)+1, 2):
+          a = c[(k+1)%Z] if (k==-h or k!=h and c[(k-1)%Z]<c[(k+1)%Z]) else c[(k-1)%Z]+1
+          b = a-k
+          s,t = a,b
+          while a<N and b<M and e[(1-o)*N+m*a+(o-1)]==f[(1-o)*M+m*b+(o-1)]:
+            a,b = a+1,b+1
+          c[k%Z],z=a,-(k-w)
+          if L%2==o and z>=-(h-o) and z<=h-o and c[k%Z]+d[z%Z] >= N:
+            D,x,y,u,v = (2*h-1,s,t,a,b) if o==1 else (2*h,N-a,M-b,N-s,M-t)
+            if D > 1 or (x != u and y != v):
+              return diff2(e[0:x],f[0:y],i,j)+diff2(e[u:N],f[v:M],i+u,j+v)
+            elif M > N:
+              return diff2([],f[N:M],i+N,j+N)
+            elif M < N:
+              return diff2(e[M:N],[],i+M,j+M)
+            else:
+              return []
+  elif N > 0: #  Modify the return statements below if you want a different edit script format
+    return [{"operation": "delete", "position_old": i+n} for n in range(0,N)]
+  else:
+    return [{"operation": "insert", "position_old": i,"position_new":j+n} for n in range(0,M)]
+
+def myers_diff_length_half_memory(old, new):
+    N = len(old)
+    M = len(new)
+    MAX = N + M
+
+    V = [None] * (MAX + 2)
+    V[1] = 0
+    for D in range(0, MAX + 1):
+        for k in range(-(D - 2*max(0, D-M)), D - 2*max(0, D-N) + 1, 2):
+            if k == -D or k != D and V[k - 1] < V[k + 1]:
+                x = V[k + 1]
+            else:
+                x = V[k - 1] + 1
+            y = x - k
+            while x < N and y < M and old[x] == new[y]:
+                x = x + 1
+                y = y + 1
+            V[k] = x
+            if x == N and y == M:
+                return D
+
+@timeit
 def main():
-    start = time.time()
-    print(datetime.datetime.now())
-
-    a_file = 'file1.txt'
-    b_file = 'file2.txt'
-
-    with open(a_file) as a_handle:
-        a_lines = [line.rstrip() for line in a_handle]
-
-    with open(b_file) as b_handle:
-        b_lines = [line.rstrip() for line in b_handle]
+    print('Reading files')
+    a_lines, b_lines = load_files('file6.txt', 'file6.txt')
 
     print('Start getting the diff')
     diff = myers_diff(a_lines, b_lines)
 
     print('Saving the diff file')
+    # save myers_diff
     with open('diff.txt', 'w') as diff_file:
         for elem in diff:
             if isinstance(elem, Keep):
-                diff_file.write(f'* {elem.line}\n')
+                diff_file.write(f'*   {elem.line}\n')
             elif isinstance(elem, Insert):
-                diff_file.write(f'+ {elem.line}\n')
+                diff_file.write(f'ADD {elem.line}\n')
             else:
-                diff_file.write(f'- {elem.line}\n')
+                diff_file.write(f'REM {elem.line}\n')
 
-    end = time.time() - start
-    print(f'Finished in - {end}s')
+    # save diff2
+    # with open('diff.txt', 'w') as diff_file:
+    #   for dict_ in diff:
+    #     if dict_['operation'] == 'insert':
+    #         diff_file.write(f'+ {b_lines[dict_["position_new"]]}\n')
+    #     elif dict_['operation'] == 'delete':
+    #         diff_file.write(f'- {a_lines[dict_["position_old"]]}\n')
 
 if __name__ == '__main__':
     sys.exit(main())

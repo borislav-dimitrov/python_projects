@@ -1,6 +1,5 @@
-import os
 import random
-import time
+from utils import timeit
 
 
 class FileGenerator:
@@ -27,15 +26,11 @@ class FileGenerator:
             for line in self._temp_content:
                 file.write(f'{line}\n')
 
+@timeit
 def main_func():
-    start = time.time()
-
     gen = FileGenerator()
-    gen.new_file('file1.txt', rows_nr=10000)
-    gen.new_file('file2.txt', rows_nr=10000)
-
-    end = time.time() - start
-    print(f'Finished in - {end}s')
+    gen.new_file('file1.txt', rows_nr=500000)
+    gen.new_file('file2.txt', rows_nr=500000)
 
 if __name__ == '__main__':
     main_func()

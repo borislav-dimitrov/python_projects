@@ -1,0 +1,14 @@
+Comparing files file3.txt and FILE4.TXT
+***** file3.txt
+random text test 123
+same line
+test 123
+321
+888
+***** FILE4.TXT
+random text test 123
+test 515
+777
+888
+*****
+
