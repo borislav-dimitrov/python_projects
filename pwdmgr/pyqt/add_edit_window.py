@@ -37,9 +37,13 @@ class AddEditWindow(QWidget):
         self.layout.addWidget(self.add_btn, 2, 0)
         self.layout.addWidget(self.cancel_btn, 2, 1)
 
+        self.save_hook = None
+
     def _add_on_click(self):
         content = (self.location_input.text(), self.pwd_input.text())
         self.table.add_row(content)
+        if self.save_hook:
+            self.save_hook()
         self._clear()
         self.close()
 
@@ -51,7 +55,6 @@ class AddEditWindow(QWidget):
         self.table.edit_row(self.editing_row, content)
         self._clear()
         self.close()
-
 
     def _cancel_on_click(self):
         self._clear()

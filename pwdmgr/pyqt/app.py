@@ -2,6 +2,9 @@ import sys
 from PyQt6 import QtWidgets
 from .add_edit_window import AddEditWindow
 from .utils import PyQtTable
+from config import STYLESHEET
+from managers.vault_manager import VaultManager
+
 
 class Application(QtWidgets.QWidget):
     def __init__(self, width=600, height=800, title='Pwd Mgr'):
@@ -14,18 +17,22 @@ class Application(QtWidgets.QWidget):
         self.height = height
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.setWindowTitle(self.title)
-        self.styleSheet = """
-        background-color:gray
-        """
-        self.setStyleSheet(self.styleSheet)
+        self.setStyleSheet(STYLESHEET)
 
         self._set_layouts()
         self._build_gui()
-        self.show()
 
         # Other Windows
         self.add_window = AddEditWindow(self.table)
+        self.add_window.save_hook = self._save_vault
         self.edit_window = AddEditWindow(self.table, edit=True)
+        self.edit_window.save_hook = self._save_vault
+
+        # Managers
+        self.vault_mgr = VaultManager()
+
+        self.on_load()
+        self.show()
 
     def _set_layouts(self):
         self.layout = QtWidgets.QGridLayout()
@@ -89,6 +96,7 @@ class Application(QtWidgets.QWidget):
 
     def _remove_on_click(self):
         self.table.remove_selected()
+        self._save_vault()
 
     def _edit_on_click(self):
         if self.edit_window and self.table.selected:
@@ -105,6 +113,14 @@ class Application(QtWidgets.QWidget):
 
     def before_exit(self):
         print('Before Exit Triggered')
+        self._save_vault()
 
     def closeEvent(self, event):
         self.before_exit()
+
+    def on_load(self):
+        self.table.insert_data(self.vault_mgr.get_raw_data())
+
+    def _save_vault(self):
+        self.vault_mgr.fill_from_app(self.table.data())
+        self.vault_mgr.dump_vault()
