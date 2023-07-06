@@ -1,0 +1,17 @@
+{
+  "crunches + leg raises": {
+    "reps": 15,
+    "rest": 1,
+    "sets": 3
+  },
+  "push-ups": {
+    "reps": 10,
+    "rest": 1,
+    "sets": 10
+  },
+  "lunges left + right side": {
+    "reps": 15,
+    "rest": 1,
+    "sets": 3
+  }
+}
