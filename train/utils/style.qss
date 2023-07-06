@@ -1,0 +1,14 @@
+QLabel#preview {
+    background-color: white;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+QLabel#programsLbl {
+
+}
+
+QLabel#previewLbl {
+
+}

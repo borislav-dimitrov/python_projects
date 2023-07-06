@@ -1,5 +1,11 @@
+import sys
+
+from controllers import MainController
+
+
 def main():
-    pass
+    main_controller = MainController(sys.argv)
+    main_controller.start_app()
 
 
 if __name__ == '__main__':
