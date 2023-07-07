@@ -5,6 +5,12 @@ class Exercise:
         self.rest = rest
         self.sets = sets
 
+    def get_exercise_info(self, indent):
+        result = f'{indent}reps  -  {self.reps}\n'
+        result += f'{indent}sets  -  {self.sets}\n'
+        result += f'{indent}rest  -  {self.rest}\n'
+        return result
+
 
 class Program:
     def __init__(self, name, dict_data, file_path):
@@ -32,3 +38,15 @@ class Program:
     @property
     def dict_data(self):
         return self._dict_data
+
+    def get_preview(self):
+        indent = 8 * ' '
+        exercise_separator = '===================================================\n'
+        preview = exercise_separator
+
+        for exercise in self.exercises:
+            preview += f'{exercise.name}\n'
+            preview += f'{exercise.get_exercise_info(indent)}'
+            preview += exercise_separator
+
+        return preview

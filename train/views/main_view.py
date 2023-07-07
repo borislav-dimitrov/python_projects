@@ -1,34 +1,18 @@
-from PySide6.QtWidgets import QMainWindow, QListWidget, QGridLayout, QPushButton, QWidget, QLabel
-from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QListWidget, QGridLayout, QPushButton, QWidget, QTextEdit, QLabel
+from .base_view import BaseView, WIDTH, HEIGHT
 
-WIDTH = 1366
-HEIGHT = 768
-TITLE = 'Trainer'
-ICON = r'resources\muscle.png'
 ROWS = 10
 COLS = 10
 MIN_WIDTH = WIDTH // 2.2
 MIN_HEIGHT = HEIGHT - 50
 
 
-class MainView(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.widget = QWidget()
-        self.main_layout = QGridLayout()
-
-        self._configure_window()
+class MainView(BaseView):
+    def __init__(self, views_controller):
+        super().__init__(views_controller)
         self._create_widgets()
 
-        self.setCentralWidget(self.widget)
-        self.widget.setLayout(self.main_layout)
-
     # region BUILD GUI
-    def _configure_window(self):
-        self.setFixedSize(WIDTH, HEIGHT)
-        self.setWindowTitle(TITLE)
-        self.setWindowIcon(QIcon(ICON))
-
     def _create_widgets(self):
         self._create_labels()
         self._create_main_tree()
@@ -52,28 +36,45 @@ class MainView(QMainWindow):
         self.main_tree.setMinimumHeight(MIN_HEIGHT)
         self.main_layout.addWidget(self.main_tree, 1, 0, ROWS, 1)
 
+        self.main_tree.itemSelectionChanged.connect(self._on_selection_changed)
+
     def _create_navigation_bar(self):
         self._navigation_bar_layout = QGridLayout()
 
         self.add_btn = QPushButton('+', self)
         self._navigation_bar_layout.addWidget(self.add_btn, 1, 0, 1, 1)
+        self.add_btn.clicked.connect(self.views_controller.create_program)
 
         self.rem_btn = QPushButton('-', self)
         self._navigation_bar_layout.addWidget(self.rem_btn, 2, 0, 1, 1)
+        self.rem_btn.clicked.connect(self.views_controller.delete_program)
 
         self.edit_btn = QPushButton('E', self)
         self._navigation_bar_layout.addWidget(self.edit_btn, 3, 0, 1, 1)
+        self.edit_btn.clicked.connect(self.views_controller.edit_program)
 
         self.quit_btn = QPushButton('Q', self)
         self._navigation_bar_layout.addWidget(self.quit_btn, 4, 0, 1, 1)
+        self.quit_btn.clicked.connect(self.views_controller.quit)
 
         self.main_layout.addLayout(self._navigation_bar_layout, 1, 1, 4, 1)
 
     def _create_preview(self):
-        self.preview = QLabel()
+        self.preview = QTextEdit()
         self.preview.setMinimumWidth(MIN_WIDTH)
         self.preview.setMinimumHeight(MIN_HEIGHT)
         self.preview.setObjectName('preview')
         self.main_layout.addWidget(self.preview, 1, 2, ROWS, 1)
 
+        self.preview.setReadOnly(True)
+
     # endregion
+
+    def _on_selection_changed(self):
+        selected_program_name = self.main_tree.selectedItems()[0].text()
+        program = self.views_controller.main_controller.programs_controller.get_program_by_name(selected_program_name)
+        self.views_controller.current_program = program
+        self.preview.setText(program.get_preview())
+
+    def refresh_main_tree_items(self):
+        self.views_controller.refresh_main_tree_items()

@@ -1,4 +1,4 @@
-from views import MainView
+from views import MainView, CreateEditProgramView
 
 
 class View:
@@ -20,17 +20,16 @@ class View:
 class ViewsController:
     def __init__(self, main_controller):
         self.main_controller = main_controller
+        self.current_program = None
 
-        # Hooks
-        self._get_all_programs = None
+        self.main_view = View(name='main', view=MainView(self))
+        self.create_edit_program_view = View(name='create_edit_program', view=CreateEditProgramView(self))
 
-        self.main_view = View(name='main', view=MainView())
-
-        self._all_views = [self.main_view, ]
+        self._all_views = [self.main_view, self.create_edit_program_view]
         self.current_view = None
 
     def initialize(self):
-        self.change_view(self.main_view)
+        self.show_main_view()
 
     def change_view(self, view: View):
         if view == self.current_view:
@@ -42,19 +41,25 @@ class ViewsController:
         self.current_view = view
         self.current_view.show()
 
-    def refresh_main_tree_items(self, programs):
-        for program in programs:
+    def refresh_main_tree_items(self):
+        for program in self.main_controller.get_all_programs():
             self.main_view.view.main_tree.addItem(program.name)
 
-    # region HOOK CALLS
-    def on_get_all_programs(self):
-        if self._get_all_programs:
-            self.refresh_main_tree_items(self._get_all_programs())
+    def show_main_view(self):
+        self.change_view(self.main_view)
+        self.main_view.view.refresh_main_tree_items()
 
-    def set_get_all_programs(self, callback):
-        if callable(callback):
-            self._get_all_programs = callback
-        else:
-            raise Exception('Invalid callback function!')
+    def create_program(self):
+        self.create_edit_program_view.view.create = True
+        self.change_view(self.create_edit_program_view)
 
-    # endregion
+    def delete_program(self):
+        print('Delete')
+
+    def edit_program(self):
+        self.create_edit_program_view.view.create = False
+        self.create_edit_program_view.view.program = self.current_program
+        self.change_view(self.create_edit_program_view)
+
+    def quit(self):
+        print('Quit')

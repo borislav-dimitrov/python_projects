@@ -12,18 +12,12 @@ class MainController:
         with open(STYLESHEET, 'r') as handler:
             self.app.setStyleSheet(handler.read())
 
-        self._programs_controller = ProgramsController(self)
-        self._views_controller = ViewsController(self)
-
-        self._configure_hooks()
+        self.programs_controller = ProgramsController(self)
+        self.views_controller = ViewsController(self)
 
     def start_app(self):
-        self._views_controller.initialize()
-        self._views_controller.on_get_all_programs()
+        self.views_controller.initialize()
         self.app.exec()
 
-    def _configure_hooks(self):
-        self._views_controller.set_get_all_programs(self._get_all_programs)
-
-    def _get_all_programs(self):
-        return self._programs_controller.programs
+    def get_all_programs(self):
+        return self.programs_controller.programs

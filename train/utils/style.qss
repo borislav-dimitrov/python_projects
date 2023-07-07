@@ -1,4 +1,4 @@
-QLabel#preview {
+QTextEdit#preview {
     background-color: white;
     border-style: solid;
     border-color: black;

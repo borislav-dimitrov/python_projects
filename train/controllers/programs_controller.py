@@ -24,7 +24,7 @@ class ProgramsController:
         return self._add_program(new_program)
 
     def copy(self, program, new_name):
-        program = self._get_program_by_name(program.name)
+        program = self.get_program_by_name(program.name)
         return self.create(new_name, program.dict_data)
 
     def update(self, old_program: Program, new_program: Program):
@@ -101,7 +101,7 @@ class ProgramsController:
         if program in self._all_programs:
             return self._all_programs.index(program)
 
-    def _get_program_by_name(self, name: str) -> Program | None:
+    def get_program_by_name(self, name: str) -> Program | None:
         for program in self._all_programs:
             if program.name == name:
                 return program
