@@ -1,8 +1,9 @@
-QTextEdit#preview {
+QTextEdit#preview, QLabel#createEditBase, QLabel#exercisesBase, QListWidget {
     background-color: white;
     border-style: solid;
     border-color: black;
     border-width: 1px;
+    border-radius: 7px;
 }
 
 QLabel#programsLbl {
@@ -11,4 +12,35 @@ QLabel#programsLbl {
 
 QLabel#previewLbl {
 
+}
+
+QLabel#programNameLbl {
+    margin: 1em;
+}
+
+QLineEdit#programNameInpt{
+    margin: 1em;
+    min-width: 200;
+    max-width: 200;
+}
+
+QLabel#createEditBase {
+}
+
+QPushButton {
+    background-color: white;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 7px;
+
+    min-width: 100;
+    max-width: 100;
+    min-height: 25;
+}
+
+QListWidget#exercisesLb {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
 }

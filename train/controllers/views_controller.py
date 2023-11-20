@@ -63,3 +63,4 @@ class ViewsController:
 
     def quit(self):
         print('Quit')
+        exit()
