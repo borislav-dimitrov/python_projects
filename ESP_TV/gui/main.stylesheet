@@ -1,0 +1,14 @@
+QMainWindow{
+    background-color: darkgray;
+}
+QLabel{
+    color: red;
+}
+QPushButton{
+    background-color: QLinearGradient(x0: 0, y0: 0, x1: 1, y1: 1, stop: 0 gray, stop: 1 darkgray);
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px 0 0 0;
+    color: white;
+}
