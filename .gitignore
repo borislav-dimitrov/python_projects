@@ -1,4 +1,4 @@
-.\jinja_training\venv
-.\pwdmgr\venv
-.\project_example\venv
-.\test_venv
+venv
+test_venv
+.idea
+__pycache__
