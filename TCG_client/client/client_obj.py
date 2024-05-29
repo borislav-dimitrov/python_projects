@@ -4,6 +4,7 @@ from .server_settings import (
     HOST, PORT, HEADER, FORMAT, DISCON_MSG, GLOBAL_MSG, OBJECT_MSG, LOGIN_MSG,
     AUTH_MSG,
 )
+from client.middleware import MIDDLEWARE
 
 
 class Client:
@@ -17,19 +18,18 @@ class Client:
 
         self.server: socket.socket | None = None
         self.connected = None
-        self.authorized = None
 
     def connect(self, login_info: dict) -> None:
         '''Connect to the server'''
         self.login = login_info
-        print('Connecting to server...')
+        MIDDLEWARE.add_game_client_message('Connecting to server...')
 
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
             try:
                 server.connect((self.host, self.port))
                 self.connected = True
                 self.server = server
-                print('Connection established!')
+                MIDDLEWARE.add_game_client_message('Connection established!')
             except ConnectionError as _:
                 # Server not responding
                 self.emergency_exit()
@@ -93,11 +93,12 @@ class Client:
 
         if message['CMD'] == AUTH_MSG:
             if message['user']:
-                self.authorized = message['user']
-                print('You have logged in successfully!\n')
+                MIDDLEWARE.authorized_user = message['user']
+                MIDDLEWARE.add_game_client_message('You have logged in successfully!')
             else:
-                self.authorized = False
-                print(f'Login Failed!\n    Reason: {message["result"]["message"]}')
+                MIDDLEWARE.authorized_user = False
+                MIDDLEWARE.add_game_client_message('Login Failed!')
+                MIDDLEWARE.add_game_client_message(f'Reason: {message["result"]["message"]}')
                 self.disconnect()
         elif message['CMD'] == DISCON_MSG:
             self.disconnect()
@@ -106,7 +107,7 @@ class Client:
             return
 
     def attempt_login(self):
-        print('Logging in...')
+        MIDDLEWARE.add_game_client_message('Logging in...')
         obj = {
             'CMD': LOGIN_MSG,
             'login_info': self.login
@@ -116,20 +117,23 @@ class Client:
 
     def disconnect(self):
         '''Disconnect from the server'''
-        print('Disconnecting from server...')
+        MIDDLEWARE.add_game_client_message('Disconnecting from server...')
         msg_obj = {
             'CMD': DISCON_MSG,
         }
 
         self.send_msg(pickle.dumps(msg_obj))
         self.connected = False
-        self.authorized = False
+        MIDDLEWARE.authorized_user = False
+        MIDDLEWARE.client = None
 
     def emergency_exit(self):
         '''Emergency exit on error'''
-        print('Server not responding...\nClient shutting down!')
+        MIDDLEWARE.add_game_client_message('Server not responding...')
+        MIDDLEWARE.add_game_client_message('Connecting failed!')
         self.connected = False
-        self.authorized = False
+        MIDDLEWARE.authorized_user = False
+        MIDDLEWARE.client = None
 
 
 CLIENT = Client()

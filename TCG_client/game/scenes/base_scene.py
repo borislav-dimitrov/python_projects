@@ -1,13 +1,14 @@
 class BaseScene:
-    def __init__(self, name: str, id_: int):
+    def __init__(self, game, name: str, id_: int):
+        self.game = game
         self.name = name
         self.id_ = id_
 
-    def draw(self, game):
+    def draw(self):
         pass
 
-    def process(self, game, event):
-        pass
+    def process(self, event):
+        self.draw()
 
-    def clear(self, game):
+    def clear(self):
         pass
