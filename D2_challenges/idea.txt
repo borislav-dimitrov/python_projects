@@ -1,0 +1,19 @@
+Challenge Types
+    QoL
+    Consumables
+    Item
+    Build (ALWAYS 1 only)
+    Class (roll after Build Restrictions to take account for possible classes)
+
+Challenge
+    Type
+    Name
+    Tier (diff tiers MUST have the same name. Can draw only 1 tier from the same challenges. Roll name, then roll tier [if any])
+    Description
+
+Challenges poll
+    # TODO - Balance
+    Easy (1x QoL, 1x Item Restrictions, etc.)
+    Medium (2x QoL, 1x Consumables Restrictions, 1x Item Restrictions, 1x Build Restrictions, etc.)
+    Hard (3x QoL, 2x Consumables Restrictions, 1x Item Restrictions, 1x Build Restrictions, 1x Class Restrictions, etc.)
+    Extreme (3x QoL, 3x Consumables Restrictions, 2x Item Restrictions, 1x Build Restrictions, 2x, Class Restrictions, etc.)

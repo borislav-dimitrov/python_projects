@@ -1,0 +1,88 @@
+{
+    "QoL": [
+        {
+            "Name": "No TP",
+            "Tier": 1,
+            "Description": "Forbids usage of TP Scrolls"
+        },
+        {
+            "Name": "No TP",
+            "Tier": 2,
+            "Description": "Forbids usage of TP Books"
+        },
+        {
+            "Name": "No ID",
+            "Tier": 1,
+            "Description": "Forbids usage of ID Scrolls"
+        },
+        {
+            "Name": "No ID",
+            "Tier": 2,
+            "Description": "Forbids usage of ID Books"
+        },
+        {
+            "Name": "No WP",
+            "Tier": 1,
+            "Description": "Forbids usage of WayPoints"
+        }
+    ],
+    "Consumables": [
+        {
+            "Name": "No HP Potions",
+            "Tier": 1,
+            "Description": "Forbids usage of all HP Potions"
+        },
+        {
+            "Name": "No MP Potions",
+            "Tier": 1,
+            "Description": "Forbids usage of all MP Potions"
+        },
+        {
+            "Name": "No Rejuvenation Potions",
+            "Tier": 1,
+            "Description": "Forbids usage of all Rejuvenation Potions"
+        }
+    ],
+    "Item": [
+        {
+            "Name": "No Unique Items",
+            "Tier": 1,
+            "Description": "Forbids usage of all Unique[Brown] Items"
+        },
+        {
+            "Name": "No Set Items",
+            "Tier": 1,
+            "Description": "Forbids usage of all Set[Green] Items"
+        },
+        {
+            "Name": "No Rare Items",
+            "Tier": 1,
+            "Description": "Forbids usage of all Rare[Yellow] Items"
+        },
+        {
+            "Name": "No Crafted Items",
+            "Tier": 1,
+            "Description": "Forbids usage of all Crafted[Orange] Items"
+        },
+        {
+            "Name": "No Amulets",
+            "Tier": 1,
+            "Description": "Forbids usage of all Amulets"
+        },
+        {
+            "Name": "No Runes 1-11",
+            "Tier": 1,
+            "Description": "Forbids usage of 1-11 Runes"
+        },
+        {
+            "Name": "No Runes 12-22",
+            "Tier": 2,
+            "Description": "Forbids usage of 12-22 Runes"
+        },
+        {
+            "Name": "No Runes 23-33",
+            "Tier": 3,
+            "Description": "Forbids usage of 23-33 Runes"
+        }
+    ]
+}

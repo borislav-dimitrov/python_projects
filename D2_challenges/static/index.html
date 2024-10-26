@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <title>Diablo II Challenges</title>
+</head>
+<body>
+    <div class="title_container">
+        <p>Diablo II Challenges</p>
+    </div>
+
+    <div class="main_grid">
+        <div class="grid_0_1">
+            <label for="select_presets">Presets</label>
+            <select name="presets" id="select_presets">
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+                <option value="Extreme">Extreme</option>
+                <!-- <option value="Custom">Custom</option> !-->
+            </select>
+        </div>
+
+        <div class="controls">
+            <button onclick="GeneratePress()">GENERATE</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="results_challenges">
+                <p class="mini_title">Challenges</p>
+                <!-- <p class="mini_title_1">[Category, Tier, Name, Description]</p> -->
+                <p class="mini_title_1">[Name. Description]</p>
+                <ul id="challenges_list">
+                </ul>
+            </div>
+            <div class="results_builds">
+                <p class="mini_title">Playable Builds</p>
+                <ul id="builds_list">
+                </ul>
+            </div>
+            <div class="results_classes">
+                <p class="mini_title">Playable Classes</p>
+                <ul id="classes_list">
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function GeneratePress(){
+        preset = document.getElementById("select_presets").value
+        fetch(`./generate_challenges/${preset}`)
+            .then(response => response.json())
+            .then(data => ProcessChallenges(data))
+            .catch(error => console.error(error));
+    }
+
+    function ProcessChallenges(data){
+        data = data["result"];
+        let challenges_list = document.getElementById("challenges_list");
+        let builds_list = document.getElementById("builds_list");
+        let classes_list = document.getElementById("classes_list");
+        ClearResults(challenges_list, builds_list, classes_list);
+
+        data["challenges"].forEach(challenge => {
+            const li_item = document.createElement("li");
+            li_item.innerHTML = RepresentChallenge(challenge);
+            challenges_list.appendChild(li_item);
+        });
+
+        data["builds"].forEach(build => {
+            const li_item = document.createElement("li");
+            li_item.innerHTML = RepresentBuild(build);
+            builds_list.appendChild(li_item);
+        });
+
+        data["classes"].forEach(cls => {
+            const li_item = document.createElement("li");
+            li_item.innerHTML = RepresentClass(cls);
+            classes_list.appendChild(li_item);
+        });
+
+        document.getElementById("results").style.display = "flex";
+    }
+
+    function RepresentChallenge(challenge){
+        let category = challenge["category"];
+        let tier = challenge["tier"];
+        let name = challenge["name"];
+        let description = challenge["description"];
+
+        // Add coloring to the key words
+        name = name.replace("TP", "<span style='color: var(--tp-color);'>TP</span>")
+        name = name.replace("ID", "<span style='color: var(--id-color);'>ID</span>")
+        name = name.replace("Rejuvenation", "<span style='color: var(--rej-pot-color);'>Rejuvenation</span>")
+        name = name.replace("HP", "<span style='color: var(--hp-pot-color);'>HP</span>")
+        name = name.replace("MP", "<span style='color: var(--mp-pot-color);'>MP</span>")
+        name = name.replace("Set", "<span style='color: var(--set-color);'>Set</span>")
+        name = name.replace("Green", "<span style='color: var(--set-color);'>Green</span>")
+        name = name.replace("Unique", "<span style='color: var(--uniq-color);'>Unique</span>")
+        name = name.replace("Brown", "<span style='color: var(--uniq-color);'>Brown</span>")
+        name = name.replace("Rare", "<span style='color: var(--rare-color);'>Rare</span>")
+        name = name.replace("Yellow", "<span style='color: var(--rare-color);'>Yellow</span>")
+        name = name.replace("Runes", "<span style='color: var(--rune-color);'>Runes</span>")
+        name = name.replace("Crafted", "<span style='color: var(--crafted-color);'>Crafted</span>")
+        name = name.replace("Orange", "<span style='color: var(--orange-color);'>Orange</span>")
+        name = name.replace("WP", "<span style='color: var(--wp-color);'>WP</span>")
+        name = name.replace("Waypoint", "<span style='color: var(--wp-color);'>Waypoint</span>")
+        description = description.replace("TP", "<span style='color: var(--tp-color);'>TP</span>")
+        description = description.replace("ID", "<span style='color: var(--id-color);'>ID</span>")
+        description = description.replace("Rejuvenation", "<span style='color: var(--rej-pot-color);'>Rejuvenation</span>")
+        description = description.replace("HP", "<span style='color: var(--hp-pot-color);'>HP</span>")
+        description = description.replace("Set", "<span style='color: var(--set-color);'>Set</span>")
+        description = description.replace("Green", "<span style='color: var(--set-color);'>Green</span>")
+        description = description.replace("Unique", "<span style='color: var(--uniq-color);'>Unique</span>")
+        description = description.replace("Brown", "<span style='color: var(--uniq-color);'>Brown</span>")
+        description = description.replace("Rare", "<span style='color: var(--rare-color);'>Rare</span>")
+        description = description.replace("Yellow", "<span style='color: var(--rare-color);'>Yellow</span>")
+        description = description.replace("Runes", "<span style='color: var(--rune-color);'>Runes</span>")
+        description = description.replace("Crafted", "<span style='color: var(--crafted-color);'>Crafted</span>")
+        description = description.replace("Orange", "<span style='color: var(--orange-color);'>Orange</span>")
+        description = description.replace("WP", "<span style='color: var(--wp-color);'>WP</span>")
+        description = description.replace("Waypoint", "<span style='color: var(--wp-color);'>Waypoint</span>")
+
+        // return `${category}, ${tier}, ${name}, ${description}`;
+        return `${name}. ${description}`;
+    }
+
+    function RepresentBuild(build){
+        let build_ = build
+
+        // Add coloring to the builds
+        build_ = build_.replace("Melee", "<span style='color: var(--melee-color);'>Melee</span>")
+        build_ = build_.replace("Range", "<span style='color: var(--range-color);'>Range</span>")
+        build_ = build_.replace("Summoner", "<span style='color: var(--summoner-color);'>Summoner</span>")
+        build_ = build_.replace("Caster", "<span style='color: var(--caster-color);'>Caster</span>")
+
+        return build_
+    }
+
+    function RepresentClass(cls){
+        let cls_ = cls["name"]
+
+        // Add coloring to the classes
+        cls_ = cls_.replace("Amazon", "<span style='color: var(--amazon-color);'>Amazon</span>")
+        cls_ = cls_.replace("Assassin", "<span style='color: var(--assassin-color);'>Assassin</span>")
+        cls_ = cls_.replace("Necromancer", "<span style='color: var(--necromancer-color);'>Necromancer</span>")
+        cls_ = cls_.replace("Barbarian", "<span style='color: var(--barbarian-color);'>Barbarian</span>")
+        cls_ = cls_.replace("Paladin", "<span style='color: var(--paladin-color);'>Paladin</span>")
+        cls_ = cls_.replace("Sorcerer", "<span style='color: var(--sorcerer-color);'>Sorcerer</span>")
+        cls_ = cls_.replace("Druid", "<span style='color: var(--druid-color);'>Druid</span>")
+
+        return cls_
+    }
+
+    function ClearResults(challenges_list, builds_list, classes_list){
+        while (challenges_list.firstChild){
+            challenges_list.removeChild(challenges_list.firstChild);
+        }
+
+        while (builds_list.firstChild){
+            builds_list.removeChild(builds_list.firstChild);
+        }
+
+        while (classes_list.firstChild){
+            classes_list.removeChild(classes_list.firstChild);
+        }
+    }
+</script>
+</html>

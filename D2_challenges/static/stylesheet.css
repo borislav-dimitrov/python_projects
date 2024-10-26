@@ -1,0 +1,171 @@
+:root {
+    --color-1: gray;
+    --color-2: black;
+    --color-3: rgb(255, 102, 0);
+
+    --font-size: 24px;
+    --font: cursive;
+    --font-color: var(--color-3);
+
+    --border-size: 3px;
+    --border-radius: 6px;
+    --border-color: var(--color-2);
+
+    --div-pad: 0px 50px 0px 50px;
+
+    --melee-color: white;
+    --range-color: darkred;
+    --caster-color: blue;
+    --summoner-color: rgb(75, 4, 75);
+
+    --amazon-color: yellow;
+    --assassin-color: white;
+    --necromancer-color: rgb(53, 52, 52);
+    --barbarian-color: tan;
+    --paladin-color: silver;
+    --sorcerer-color: darkgreen;
+    --druid-color: rgb(146, 78, 0);
+
+    --rare-color: gold;
+    --uniq-color: tan;
+    --set-color: green;
+    --crafted-color: rgb(177, 74, 5);
+    --normal-color: blue;
+    --uncommon-color: lightgray;
+
+    --hp-pot-color: darkred;
+    --mp-pot-color: blue;
+    --rej-pot-color: purple;
+
+    --tp-color: blue;
+    --id-color: darkred;
+    --rune-color: orange;
+    --wp-color: silver;
+}
+
+body {
+    background: var(--color-1);
+}
+
+select {
+    background: var(--color-1);
+
+    border: var(--border-size) solid var(--border-color);
+    border-radius: var(--border-radius);
+    min-width: 150px;
+    cursor: pointer;
+
+    -webkit-text-stroke: 1px var(--color-2);
+    font-family: var(--font) !important;
+    font-size: var(--font-size);
+    font-weight: bold;
+    color: var(--font-color);
+}
+
+button {
+    background: var(--color-1);
+
+    border: var(--border-size) solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    -webkit-text-stroke: 1.5px var(--color-2);
+    font-family: var(--font) !important;
+    font-size: var(--font-size);
+    font-weight: bold;
+    color: var(--font-color);
+
+    cursor: pointer;
+}
+
+p, label {
+    -webkit-text-stroke: 1.5px var(--color-2);
+    font-family: var(--font);
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--font-color);
+}
+
+ul {
+    padding-inline-start: 0px !important;
+}
+
+li {
+    font-weight: bold;
+}
+
+.title_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.title_container > p {
+    font-family: var(--font);
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.main_grid{
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 10px;
+    column-gap: 5px;
+}
+
+.grid_0_1 {
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 1;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.controls{
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
+
+    display: flex;
+    justify-content: center;
+}
+
+.results {
+    display: none;
+
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: -1;
+    grid-row-end: -1;
+
+    justify-content: space-between;
+}
+
+.results > div {
+    max-width: 25%;
+    min-width: 25%;
+
+    border: var(--border-size) solid var(--border-color);
+    border-radius: var(--border-radius);
+
+    padding: var(--div-pad);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.mini_title{
+    font-size: 30px;
+}
+
+.mini_title_1{
+    color: var(--color-2);
+    font-size: 15px;
+    -webkit-text-stroke: unset;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='stylesheet.css') }}"
+    />
+    <title>Hearthstone Battlegrounds CheatSheet</title>
+  </head>
+  <body>
+    <div class="container-main">
+      <div class="container-controls">
+        <div class="container-controls-tier">
+          <p>Chose Tier:</p>
+          <input type="radio" id="all_tiers" name="tier" value="ALL" />
+          <label for="all_tiers">All</label><br />
+          <input type="radio" id="t1" name="tier" value="T1" />
+          <label for="t1">Tier 1</label><br />
+          <input type="radio" id="t2" name="tier" value="T2" />
+          <label for="t2">Tier 2</label><br />
+          <input type="radio" id="t3" name="tier" value="T3" />
+          <label for="t3">Tier 3</label><br />
+          <input type="radio" id="t4" name="tier" value="T4" />
+          <label for="t4">Tier 4</label><br />
+          <input type="radio" id="t5" name="tier" value="T5" />
+          <label for="t5">Tier 5</label><br />
+          <input type="radio" id="t6" name="tier" value="T6" />
+          <label for="t6">Tier 6</label><br />
+          <!-- <select name="tiers" id="tiers_sel">
+            <option value="t1">T1</option>
+            <option value="t2">T2</option>
+            <option value="t3">T3</option>
+            <option value="t4">T4</option>
+            <option value="t5">T5</option>
+            <option value="t6">T6</option>
+          </select> -->
+          <br /><br />
+        </div>
+        <div class="container-controls-race">
+          <p>Chose Race:</p>
+          <input type="radio" id="all_races" name="race" value="ALL" />
+          <label for="all_races">All</label><br />
+          <input type="radio" id="undead" name="race" value="UNDEAD" />
+          <label for="undead">Undead</label><br />
+          <input type="radio" id="murloc" name="race" value="MURLOC" />
+          <label for="murloc">Murloc</label><br />
+          <input type="radio" id="demon" name="race" value="DEMON" />
+          <label for="demon">Demon</label><br />
+          <input type="radio" id="mech" name="race" value="MECH" />
+          <label for="mech">Mech</label><br />
+          <input type="radio" id="elemental" name="race" value="ELEMENTAL" />
+          <label for="elemental">Elemental</label><br />
+          <input type="radio" id="beast" name="race" value="BEAST" />
+          <label for="beast">Beast</label><br />
+          <input type="radio" id="pirate" name="race" value="PIRATE" />
+          <label for="pirate">Pirate</label><br />
+          <input type="radio" id="dragon" name="race" value="DRAGON" />
+          <label for="dragon">Dragon</label><br />
+          <input type="radio" id="quilboar" name="race" value="QUILBOAR" />
+          <label for="quilboar">Quilboar</label><br />
+          <input type="radio" id="naga" name="race" value="NAGA" />
+          <label for="naga">Naga</label><br />
+          <!-- <select name="races" id="races_sel">
+            <option value="undead">UNDEAD</option>
+            <option value="murloc">MURLOC</option>
+            <option value="demon">DEMON</option>
+            <option value="mech">MECH</option>
+            <option value="elemental">ELEMENTAL</option>
+            <option value="beast">BEAST</option>
+            <option value="pirate">PIRATE</option>
+            <option value="dragon">DRAGON</option>
+            <option value="quilboar">QUILBOAR</option>
+            <option value="naga">NAGA</option>
+          </select> -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
