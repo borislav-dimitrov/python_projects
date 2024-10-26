@@ -5,6 +5,8 @@ from .game_settings import GAME_NAME, WIDTH, HEIGHT, FPS
 from .managers import SceneManager
 from client import connect, MIDDLEWARE
 
+DEBUG = True
+
 
 class Game:
     def __init__(self):
@@ -20,12 +22,18 @@ class Game:
 
         self.running = False
         self.scene_manager = SceneManager(self)
-        self.scene_manager.active_scene = self.scene_manager.lobby_scene
+        self.scene_manager.active_scene = self.scene_manager.arena_lobby_scene
+
+        self.sleep = 0
 
     def start(self):
         self.running = True
 
         while self.running:
+            if self.sleep:
+                pygame.time.wait(self.sleep * 1000)
+                self.sleep = 0
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.stop()
@@ -48,7 +56,7 @@ class Game:
         sys.exit()
 
     def connect_to_server(self, username: str, password: str):
-        if connect(username, password):
+        if connect(username, password, debug=DEBUG):
             if not self.middleware.client:
                 # Unknown Issue as of now
                 self.middleware.add_game_client_message('Something went wrong! :(')

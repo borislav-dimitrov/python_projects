@@ -1,32 +1,49 @@
 import time
-from reminders import REMINDERS
+import os
+import winsound
+from threading import Thread
 
+SOUNDS = {
+    'start1': {'file': 'start1.wav', 'len': 4},
+    'start2': {'file': 'start2.wav', 'len': 1},
+    'end': {'file': 'end.wav', 'len': 1},
+}
 
-def check_show_message(time_passed: int) -> None:
-    for message in REMINDERS:
-        if time_passed - message.last_message_shown >= message.seconds:
-            message.show(time_passed)
-
-
-def announce_reminders() -> None:
-    txt = 'Currently set reminders are:\n\n'
-    for idx, message in enumerate(REMINDERS):
-        txt += f'{idx}. Message: {message.message} // Remind every: {message.seconds / 60} minutes\n\n'
-
-    print(f'{"=" * 30}\n{txt}\n{"=" * 30}')
-
+TIMERS = {
+    'abs': {'rest': 15, 'workout': 45},
+    'pushups': {'rest': 20, 'workout': 30},
+}
 
 def main_func() -> None:
-    announce_reminders()
     running = True
+    rest = True
     time_passed = 0
+    start_sound = SOUNDS['start1']
+    end_sound = SOUNDS['end']
+    rest_timer = TIMERS['pushups']['rest']
+    work_out_timer = TIMERS['pushups']['workout']
 
     while running:
+        os.system('cls')
+
         time_passed += 1
-
-        check_show_message(time_passed)
-
+        print(f'{time_passed}s - {"RESTING" if rest else "WORKING OUT"}')
         time.sleep(1)
+
+        if rest:
+            if time_passed == rest_timer - start_sound['len']:
+                t = Thread(target=winsound.PlaySound, args=(start_sound['file'], winsound.SND_ALIAS))
+                t.start()
+            if time_passed >= rest_timer:
+                time_passed = 0
+                rest = False
+        else:
+            if time_passed == work_out_timer - end_sound['len']:
+                t = Thread(target=winsound.PlaySound, args=(end_sound['file'], winsound.SND_ALIAS))
+                t.start()
+            if time_passed >= work_out_timer:
+                time_passed = 0
+                rest = True
 
 
 if __name__ == '__main__':

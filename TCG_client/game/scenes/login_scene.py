@@ -8,7 +8,7 @@ import game.colors as colors
 class LoginScene(BaseScene):
     def __init__(self, game, name: str, id_: int):
         super().__init__(game, name, id_)
-        self.background = pygame.image.load(r'.\game\art\lobby\bg.jpg')
+        self.background = pygame.image.load(r'.\game\assets\art\lobby\bg.jpg')
         self.background = pygame.transform.scale(self.background, self.game.resolution)
 
         self.uname_input = InputBox(800, 400, 500, 50, font=BASE_FONT_BLACK, label='UserName: ')
@@ -41,9 +41,12 @@ class LoginScene(BaseScene):
     def process(self, event):
         self._check_for_client_messages()
 
-        super().process(event)
+        self.draw()
+
         self.uname_input.handle_event(event)
         self.pwd_input.handle_event(event)
+
+        self.output.handle_event(event)
         self.submit_btn.handle_event(event)
         self.exit_btn.handle_event(event)
 
@@ -58,21 +61,24 @@ class LoginScene(BaseScene):
         self.exit_btn.disabled = True
 
         self.game.connect_to_server(self.uname_input.text, self.pwd_input.text)
-        self.output.show_multiple_messages(self.game.middleware.game_client_messages)
-        self.game.middleware.clear_game_client_messages()
+        self._check_for_client_messages()
+        self.output.draw(self.game.screen)
 
-        if self.game.middleware.authorized_user:
-            def tmp():
-                self.submit_btn.disabled = False
-                self.exit_btn.disabled = False
-                self.game.scene_manager.change_scene(self.game.scene_manager.lobby_scene)
-
-            Timer(3, tmp)
-        else:
-            self.submit_btn.disabled = False
-            self.exit_btn.disabled = False
+        self.game.sleep = 2
+        self._process_authorized()
 
     def _check_for_client_messages(self):
         if self.game.middleware.game_client_messages:
             self.output.show_multiple_messages(self.game.middleware.game_client_messages)
             self.game.middleware.clear_game_client_messages()
+
+    def _process_authorized(self):
+        if self.game.middleware.authorized_user:
+            self.game.sleep = 2
+            self.submit_btn.disabled = False
+            self.exit_btn.disabled = False
+            self.game.scene_manager.change_scene(self.game.scene_manager.lobby_scene)
+        else:
+            self.game.middleware.add_game_client_message('Login Failed!')
+            self.submit_btn.disabled = False
+            self.exit_btn.disabled = False

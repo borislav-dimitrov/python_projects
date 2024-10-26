@@ -3,35 +3,31 @@ import pygame
 import user.user
 from .label import Label
 import game.fonts.fonts
+import game.colors.colors
 
 FONT_CONSTRUCTOR = game.fonts.fonts.BaseFont
+COLOR_CONSTRUCTOR = game.colors.colors.BaseColor
 
 
 class CharacterPanel:
-    def __init__(self, user_obj: user.user.User):
-        self.panel_x = 0
-        self.panel_y = 0
-        self.panel_w = 0
-        self.panel_h = 0
-        self.row_gap = 10
-        self.col_gap = 20
+    def __init__(self, user_obj: user.user.User = None):
+        self.panel_w = 450
+        self.panel_h = 200
 
-        self.user_name_panel = self._construct_player_name(user_obj.username)
+        self.bg_img = pygame.image.load(r'.\game\assets\art\lobby\CharacterPanel_v0.1.png')
+        self.bg_img = pygame.transform.scale(self.bg_img, (self.panel_w, self.panel_h))
 
-    def _construct_player_name(self, player_name: str) -> Label:
-        label_rect = pygame.Rect(self.panel_x + self.col_gap, self.panel_y + self.row_gap, 100, 50)
-        font = FONT_CONSTRUCTOR(size=24)
-        label = Label(rect=label_rect, text=player_name, font=font)
+        # self._construct_char_panel_sub_parts(user_obj.username)
+        self._construct_char_panel_sub_parts('test_user')
 
-        self._recalc_dimensions(label_rect)
-        return label
+    def _construct_char_panel_sub_parts(self, player_name: str) -> None:
+        label_rect = pygame.Rect(190, 5, 250, 50)
+        font = FONT_CONSTRUCTOR(size=24, color=COLOR_CONSTRUCTOR(164, 56, 25))
+        self.user_name = Label(rect=label_rect, text=player_name, font=font, text_only=True)
 
-    def _recalc_dimensions(self, rect: pygame.Rect):
-        self.panel_w += rect.w + self.col_gap
-        self.panel_h += rect.h + self.row_gap
-
-    def draw(self, screen, mouse_pos):
-        self.user_name_panel.draw(screen, mouse_pos)
+    def draw(self, screen, mouse_pos=None):
+        screen.blit(self.bg_img, (0, 0))
+        self.user_name.draw(screen)
 
     def handle_event(self, event):
         pass

@@ -1,4 +1,4 @@
-from game.scenes import BaseScene, LoginScene, LobbyScene
+from game.scenes import BaseScene, LoginScene, LobbyScene, ArenaLobbyScene
 
 
 class SceneManager:
@@ -7,6 +7,7 @@ class SceneManager:
         self.active_scene: BaseScene | None = None
         self.login_scene: LoginScene = LoginScene(self.game, 'Login', 1)
         self.lobby_scene: LobbyScene = LobbyScene(self.game, 'Lobby', 2)
+        self.arena_lobby_scene: ArenaLobbyScene = ArenaLobbyScene(self.game, 'ArenaLobby', 3)
 
     def change_scene(self, scene: BaseScene) -> None:
         if self.active_scene is scene:

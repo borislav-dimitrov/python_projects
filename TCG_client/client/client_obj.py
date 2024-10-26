@@ -94,10 +94,8 @@ class Client:
         if message['CMD'] == AUTH_MSG:
             if message['user']:
                 MIDDLEWARE.authorized_user = message['user']
-                MIDDLEWARE.add_game_client_message('You have logged in successfully!')
             else:
                 MIDDLEWARE.authorized_user = False
-                MIDDLEWARE.add_game_client_message('Login Failed!')
                 MIDDLEWARE.add_game_client_message(f'Reason: {message["result"]["message"]}')
                 self.disconnect()
         elif message['CMD'] == DISCON_MSG:
@@ -117,7 +115,6 @@ class Client:
 
     def disconnect(self):
         '''Disconnect from the server'''
-        MIDDLEWARE.add_game_client_message('Disconnecting from server...')
         msg_obj = {
             'CMD': DISCON_MSG,
         }

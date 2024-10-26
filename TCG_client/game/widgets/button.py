@@ -4,10 +4,12 @@ from typing import Callable
 from game.fonts import BaseFont
 from game.colors import BaseColor, LIGHT_GRAY, DARK_GRAY
 
+pygame.mixer.init()
+
 
 class Button:
     def __init__(
-            self, text: str, x: int, y: int, w: int, h: int, on_click: Callable,
+            self, text: str, x: int | float, y: int | float, w: int | float, h: int | float, on_click: Callable,
             font: BaseFont, bg_color: BaseColor, hover_color: BaseColor,
             border_color: BaseColor, border_radius: int = 10, border_width: int = 2
     ):
@@ -28,6 +30,8 @@ class Button:
         self.border_color = border_color
         self.border_width = border_width
         self.border_radius = border_radius
+
+        self.click_sound = pygame.mixer.Sound(r'.\game\assets\sounds\click.ogg')
 
     def draw(self, screen, mouse_pos):
         if self.rect.collidepoint(mouse_pos):
@@ -53,4 +57,5 @@ class Button:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos) and self.on_click:
+                self.click_sound.play()
                 self.on_click()
