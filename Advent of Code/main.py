@@ -1,6 +1,4 @@
-from day_1.main import Solution as Solution1, INPUT_FILE_1 as IF_1_1, INPUT_FILE_2 as IF_1_2
-from day_2.main import Solution as Solution2, INPUT_FILE as IF_2_1
-from day_3.main import Solution as Solution3, INPUT_FILE as IF_3_1
+from y2023.day3.main import Solution as Solution3
 
 
 def read_input(file):
@@ -13,9 +11,7 @@ def read_input(file):
 
 
 def main():
-    day_1 = Solution1(read_input(IF_1_1), read_input(IF_1_2))
-    day_2 = Solution2(read_input(IF_2_1))
-    day_3 = Solution3(read_input(IF_3_1))
+    day3 = Solution3(read_input)
 
 
 if __name__ == '__main__':
