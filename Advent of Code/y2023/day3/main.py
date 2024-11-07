@@ -1,17 +1,16 @@
 from copy import deepcopy
 
-
 INPT_FILE = r'y2023\day3\puzzle.txt'
 
 
-class ObjTypes():
+class ObjTypes:
     DOT = 'DOT'
     SYMBOL = 'SYMBOL'
     NUMBER = 'NUMBER'
     PART_NR = 'PART_NR'
 
 
-class Obj():
+class Obj:
     def __init__(self, symbol, row, column, obj_type) -> None:
         self.symbol = symbol
         self.row = row
@@ -19,7 +18,7 @@ class Obj():
         self.obj_type = obj_type
 
 
-class PartNumber():
+class PartNumber:
     def __init__(self, numbers: list[Obj]) -> None:
         self.numbers = numbers
         self.value = int(''.join([n.symbol for n in self.numbers]))
@@ -29,7 +28,7 @@ class PartNumber():
         self.is_valid = False
 
 
-class Solution():
+class Solution:
     def __init__(self, read_file_func) -> None:
         self._input = read_file_func(INPT_FILE)
         self._dots: list[Obj] = []
@@ -53,7 +52,6 @@ class Solution():
         self._find_gears()
         gear_ratio_sum = sum(self._gears)
         print(f'Gear ratio sum: {gear_ratio_sum}')
-
 
     def _process_objects_from_input(self):
         for row, row_text in enumerate(self._input):
