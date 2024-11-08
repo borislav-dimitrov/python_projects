@@ -2,6 +2,7 @@ import tkinter as tk
 import customtkinter as ctk
 
 from controller import BrightnessController, Monitor
+from utils import resource_path
 
 ctk.set_appearance_mode('light')
 ctk.set_default_color_theme('green')
@@ -31,7 +32,7 @@ class App:
 
     def _config_app(self) -> None:
         self._root.title('Brightness Controller')
-        self._root.iconbitmap('icon.ico')
+        self._root.iconbitmap(resource_path('icon.ico'))
         self._root.resizable(False, False)
         self._center_window(self._initial_width, self._initial_height)
 
