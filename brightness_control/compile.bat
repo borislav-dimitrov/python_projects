@@ -8,4 +8,6 @@ call ".\venv\Scripts\activate" && pyinstaller ^
  --name="Brightness Controller" ^
  "main.py"
 
+rem Cleanup
 del "Brightness Controller.spec"
+rd /s /q "build"
