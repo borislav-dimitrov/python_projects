@@ -1,0 +1,1 @@
+pyinstaller --onefile --distpath "..\..\..\compiled\brightness control" --icon="icon.ico" --name="Brightness Controller" "main.py"
