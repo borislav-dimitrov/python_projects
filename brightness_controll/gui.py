@@ -170,7 +170,7 @@ class App:
             self._refresh_gui_btn.configure(text=original_text)
             self._refresh_gui_btn.configure(state=tk.NORMAL)
 
-        self._root.after(300, complete_refresh, )
+        self._root.after(300, complete_refresh)
 
     @staticmethod
     def _validate_entry(value: str) -> bool:
