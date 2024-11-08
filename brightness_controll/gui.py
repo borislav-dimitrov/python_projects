@@ -8,7 +8,7 @@ ctk.set_default_color_theme('green')
 
 
 class App:
-    def __init__(self):
+    def __init__(self) -> None:
         self._brightness_controller = BrightnessController()
         self._allowed_monitor_len = 15
 
@@ -33,7 +33,7 @@ class App:
         self._root.title('Brightness Controller')
         self._root.iconbitmap('icon.ico')
         self._root.resizable(False, False)
-        self._root.geometry(f'{self._initial_width}x{self._initial_height}')
+        self._center_window(self._initial_width, self._initial_height)
 
     def _create_widgets(self) -> None:
         self._global_frame = ctk.CTkFrame(self._root, fg_color='transparent')
@@ -45,7 +45,7 @@ class App:
 
         self._create_brightness_widgets()
 
-    def _create_brightness_widgets(self):
+    def _create_brightness_widgets(self) -> None:
         self._brightness_widgets_frame = ctk.CTkScrollableFrame(self._global_frame, fg_color='transparent')
         self._brightness_widgets_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.TRUE)
 
@@ -54,12 +54,12 @@ class App:
         for monitor in self._brightness_controller.monitors:
             self._create_monitor_brightness_widget(monitor)
 
-    def _create_monitor_brightness_widget(self, monitor: Monitor):
-        def slider_mouse_up_callback(_):
+    def _create_monitor_brightness_widget(self, monitor: Monitor) -> None:
+        def slider_mouse_up_callback(_) -> None:
             entry_var.set(str(slider_var.get()))
             self._update_brightness(slider_var.get(), monitor=monitor)
 
-        def entry_return_callback(_):
+        def entry_return_callback(_) -> None:
             slider_var.set(int(entry_var.get()))
             self._update_brightness(slider_var.get(), monitor=monitor)
 
@@ -97,12 +97,12 @@ class App:
         slider.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.TRUE, pady=(0, 5))
         slider.bind('<ButtonRelease-1>', slider_mouse_up_callback)
 
-    def _create_global_brightness_widget(self):
-        def slider_mouse_up_callback(_):
+    def _create_global_brightness_widget(self) -> None:
+        def slider_mouse_up_callback(_) -> None:
             entry_var.set(str(slider_var.get()))
             self._update_brightness(slider_var.get(), is_global=True)
 
-        def entry_return_callback(_):
+        def entry_return_callback(_) -> None:
             slider_var.set(int(entry_var.get()))
             self._update_brightness(slider_var.get(), is_global=True)
 
@@ -133,7 +133,9 @@ class App:
         slider.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.TRUE, pady=(0, 5))
         slider.bind('<ButtonRelease-1>', slider_mouse_up_callback)
 
-    def _update_brightness(self, brightness_level: int, is_global: bool = False, monitor: Monitor | None = None):
+    def _update_brightness(
+            self, brightness_level: int, is_global: bool = False, monitor: Monitor | None = None
+    ) -> None:
         if is_global:
             self._brightness_controller.set_brightness(brightness_level)
             for entry_var, slider_var in zip(self._monitor_entry_variables, self._monitor_slider_variables):
@@ -142,7 +144,7 @@ class App:
         else:
             self._brightness_controller.set_brightness(brightness_level, monitor)
 
-    def _refresh_gui(self):
+    def _refresh_gui(self) -> None:
         for widget in self._global_frame.winfo_children():
             if isinstance(widget, ctk.CTkButton):
                 continue
@@ -166,7 +168,7 @@ class App:
 
         self._refresh_gui()
 
-        def complete_refresh():
+        def complete_refresh() -> None:
             self._refresh_gui_btn.configure(text=original_text)
             self._refresh_gui_btn.configure(state=tk.NORMAL)
 
@@ -176,7 +178,7 @@ class App:
     def _validate_entry(value: str) -> bool:
         return value.isdigit() or value == ""
 
-    def _resize_if_needed(self):
+    def _resize_if_needed(self) -> None:
         self._root.update_idletasks()
         required_width = 0
         offset = 30
@@ -185,4 +187,12 @@ class App:
             required_width = widget.winfo_reqwidth()
 
         if required_width:
-            self._root.geometry(f'{required_width + offset}x{self._initial_height}')
+            self._center_window(required_width + offset, self._initial_height)
+
+    def _center_window(self, width: int, height: int) -> None:
+        screen_width = self._root.winfo_screenwidth()
+        screen_height = self._root.winfo_screenheight()
+        x = (screen_width // 2) - (width // 2)
+        y = (screen_height // 2) - (height // 2)
+
+        self._root.geometry(f'{width}x{height}+{x}+{y}')
