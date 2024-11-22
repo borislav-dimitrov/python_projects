@@ -1,13 +1,19 @@
-from food import FoodManager
-from food.utils import DishNames
+import sys
+import traceback
+from PyQt6 import QtWidgets
+from ui import Window
+
+
+def handle_exception(exc_type: Exception, exc_value: Exception, exc_traceback: traceback):
+    raise exc_value
 
 
 def main() -> None:
-    food_mgr = FoodManager()
-
-    print(food_mgr.get_dish(DishNames.OAT_MEAL).dish_type)
-    print(food_mgr.get_dish_nutrition(DishNames.OAT_MEAL, servings=1).__dict__)
-
+    sys.excepthook = handle_exception
+    app = QtWidgets.QApplication(['Test'])
+    window = Window(app)
+    window.show()
+    app.exec()
 
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 from .dish import Dish
 from .nutrition import Nutrition
+from .product import Product
 from .product_manager import ProductManager
 from .recipe_manager import RecipeManager
 from .dish_manager import DishManger
@@ -25,6 +26,12 @@ class FoodManager:
 
     def _initialize_dishes(self) -> None:
         self._dish_mgr.add_dish(self._recipe_mgr.get_recipe_by_name(DishNames.OAT_MEAL), dish_type=DishTypes.BREAKFAST)
+
+    def get_product(self, name: str) -> Product:
+        return self._product_mgr.get_product_by_name(name)
+
+    def get_all_products(self) -> list[Product]:
+        return self._product_mgr.get_all_products()
 
     def get_dish(self, name: str) -> Dish:
         return self._dish_mgr.get_dish_by_name(name)

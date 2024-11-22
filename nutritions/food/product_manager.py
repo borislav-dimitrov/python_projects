@@ -19,3 +19,6 @@ class ProductManager:
                 return product
 
         raise RuntimeError(f'Food with name {name} was not found!')
+
+    def get_all_products(self) -> list[Product]:
+        return self._products
