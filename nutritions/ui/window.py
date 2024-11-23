@@ -28,7 +28,14 @@ class Window(QtWidgets.QWidget):
         self._create_widgets()
 
     def _create_widgets(self) -> None:
-        self._products_input = AutoCompleteInput([p.name for p in self._food_mgr.get_all_products()])
+        auto_complete_info = []
+        for product in self._food_mgr.get_all_products():
+            if product.hint:
+                auto_complete_info.append(f'{product.name} | hint: {product.hint}')
+            else:
+                auto_complete_info.append(product.name)
+
+        self._products_input = AutoCompleteInput(auto_complete_info)
         self._products_input.setPlaceholderText('Input product name...')
         self._amt_input = QtWidgets.QLineEdit()
         self._amt_input.setPlaceholderText('Amount [gr]')
@@ -88,7 +95,7 @@ class Window(QtWidgets.QWidget):
         layout.setRowStretch(4, 10)
 
     def _on_add_press(self):
-        product_name = self._products_input.text()
+        product_name = self._products_input.text().split(' | ')[0]
         product_amt = self._amt_input.text()
         if not product_name or not product_amt:
             return
@@ -98,7 +105,7 @@ class Window(QtWidgets.QWidget):
         self._add_total_nutrition(new_product.calc_nutrition(amount))
 
         self._added_products.append([new_product, amount])
-        self._products_list.addItem(f'{self._products_input.text()} | {self._amt_input.text()}gr')
+        self._products_list.addItem(f'{product_name} | {amount}gr')
         self._products_input.setText('')
         self._amt_input.setText('')
 

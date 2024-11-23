@@ -2,8 +2,9 @@ from .nutrition import Nutrition
 
 
 class Product:
-    def __init__(self, name: str, calories: int, protein: int, fat: int, carbs: int) -> None:
+    def __init__(self, name: str, hint: str, calories: int, protein: int, fat: int, carbs: int) -> None:
         self.name = name
+        self.hint = hint
         self.calories = calories
         self.protein = protein
         self.fat = fat
