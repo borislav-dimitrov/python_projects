@@ -19,6 +19,7 @@ class Bot:
         self._focus_game_window()
 
         self._timer.stop()
+        self._commands.clear()
         self._parse_macro(macro)
         self._execute_next_command()
 
