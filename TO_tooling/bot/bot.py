@@ -15,7 +15,7 @@ class Bot:
         self._timer.timeout.connect(self._execute_next_command)
         self._commands = []
 
-    def run_macro(self, macro: str, interval: int = 2000) -> None:
+    def run_macro(self, macro: str) -> None:
         self._focus_game_window()
 
         self._timer.stop()
@@ -76,12 +76,12 @@ class Bot:
                 pid = proc.pid
                 break
         else:
-            raise RuntimeError('Couldn\'t find game window!')
+            raise RuntimeError('Could not find game window!')
 
-        def callback(hwnd, hwnds):
+        def callback(hwnd, hwnds_):
             _, found_pid = win32process.GetWindowThreadProcessId(hwnd)
             if found_pid == pid:
-                hwnds.append(hwnd)
+                hwnds_.append(hwnd)
             return True
 
         hwnds = []

@@ -1,6 +1,5 @@
-import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton
-from PySide6.QtCore import Qt, QPoint
+from PySide6.QtWidgets import QPushButton
+from PySide6.QtCore import Qt
 
 class DraggableButton(QPushButton):
     def __init__(self, parent=None):
