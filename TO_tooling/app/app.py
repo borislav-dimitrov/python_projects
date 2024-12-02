@@ -122,5 +122,8 @@ class App(QtWidgets.QApplication):
         self._process_handler.on_tick(game_hwnd, self._update_hp_mp)
 
     def _update_hp_mp(self, hp_mp: tuple[int, int]) -> None:
-        self._hp_value_lbl.setText(str(hp_mp[0]))
-        self._mp_value_lbl.setText(str(hp_mp[1]))
+        if hp_mp[0] != -1:
+            self._hp_value_lbl.setText(str(hp_mp[0]))
+
+        if hp_mp[1] != -1:
+            self._mp_value_lbl.setText(str(hp_mp[1]))

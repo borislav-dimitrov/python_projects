@@ -22,7 +22,10 @@ class MemReader:
         addr = self._pm.read_int(base_addr + pointer)
 
         for i in offsets[:-1]:
-            addr = self._pm.read_int(addr + i)
+            try:
+                addr = self._pm.read_int(addr + i)
+            except pymem.exception.MemoryReadError:
+                return -1
 
         return self._pm.read_int(addr + offsets[-1])
 
