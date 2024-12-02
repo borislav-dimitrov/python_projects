@@ -1,25 +1,24 @@
-import psutil
 import pyautogui
 import win32api
 import win32con
-import win32gui
-import win32process
 from PySide6 import QtCore
 
 
 class Bot:
     def __init__(self, timer: QtCore.QTimer):
-        self._process_name = 'client.exe'
-        self._game_hwnd = self._get_window_hwnd()
+        self._current_game_hwnd = 0
         self._timer = timer
         self._timer.timeout.connect(self._execute_next_command)
         self._commands = []
 
-    def run_macro(self, macro: str) -> None:
-        self._focus_game_window()
-
+    def run_macro(self, macro: str, game_hwnd: int) -> None:
         self._timer.stop()
         self._commands.clear()
+
+        if not game_hwnd:
+            raise RuntimeError('Missing game hwnd!')
+
+        self._current_game_hwnd = game_hwnd
         self._parse_macro(macro)
         self._execute_next_command()
 
@@ -40,55 +39,6 @@ class Bot:
 
             self._commands.append(key_time_pair)
 
-    @staticmethod
-    def get_mouse_pos() -> tuple[int, int]:
-        x, y = pyautogui.position()
-        return x, y
-
-    @staticmethod
-    def get_hp_mp_state() -> tuple[str, str]:
-        hp_color = ((173, 0, 2),)
-        mp_color = ((0, 77, 149), (0, 76, 148))
-        low_hp_threshold = (155, 73)
-        low_mp_threshold = (158, 83)
-
-        screenshot = pyautogui.screenshot()
-        hp = 'GOOD' if screenshot.getpixel(low_hp_threshold) in hp_color else 'LOW'
-        mp = 'GOOD' if screenshot.getpixel(low_mp_threshold) in mp_color else 'LOW'
-        return hp, mp
-
-    def _focus_game_window(self) -> None:
-        win32gui.ShowWindow(self._game_hwnd, win32con.SW_SHOW)
-        win32gui.SetForegroundWindow(self._game_hwnd)
-        win32api.keybd_event(win32con.VK_MENU, 0, win32con.KEYEVENTF_EXTENDEDKEY | 0, 0)
-        win32api.keybd_event(win32con.VK_MENU, 0, win32con.KEYEVENTF_EXTENDEDKEY | win32con.KEYEVENTF_KEYUP, 0)
-
-    def _get_window_hwnd(self) -> int:
-        hwnd = self._get_hwnd_from_proc_name()
-
-        if not hwnd:
-            raise RuntimeError('Could not find process window!')
-
-        return hwnd
-
-    def _get_hwnd_from_proc_name(self) -> int:
-        for proc in psutil.process_iter():
-            if proc.name() == self._process_name:
-                pid = proc.pid
-                break
-        else:
-            raise RuntimeError('Could not find game window!')
-
-        def callback(hwnd, hwnds_):
-            _, found_pid = win32process.GetWindowThreadProcessId(hwnd)
-            if found_pid == pid:
-                hwnds_.append(hwnd)
-            return True
-
-        hwnds = []
-        win32gui.EnumWindows(callback, hwnds)
-        return hwnds[0]
-
     def _send_msg(self, command: list) -> None:
         key, delay = command[0], int(command[1])
 
@@ -100,8 +50,16 @@ class Bot:
             key = ord(key.upper()) if len(key) == 1 else None
 
         if key:
-            win32api.SendMessage(self._game_hwnd, win32con.WM_KEYDOWN, key, 0)
-            win32api.SendMessage(self._game_hwnd, win32con.WM_KEYUP, key, 0)
+            win32api.SendMessage(self._current_game_hwnd, win32con.WM_KEYDOWN, key, 0)
+            win32api.SendMessage(self._current_game_hwnd, win32con.WM_KEYUP, key, 0)
 
         self._timer.start(delay + 200)
 
+
+    @staticmethod
+    def tmp_1() -> None:
+        pyautogui.move(850, 525)
+        pyautogui.keyDown('shift')
+        pyautogui.rightClick(850, 525)
+        pyautogui.rightClick(850, 525)
+        pyautogui.keyUp('shift')
