@@ -1,4 +1,5 @@
 from app import App
+from memory_reader import MemReader
 
 
 def main():

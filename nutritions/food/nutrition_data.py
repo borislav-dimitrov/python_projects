@@ -126,11 +126,11 @@ NUTRITION_PER_100_GRAMS = {
         "carbs": 13.34
     },
     "soup_19B_wo_shrimp": {
-        "hint": "",
-        "calories": 695,
-        "protein": 40,
-        "fat": 22.21,
-        "carbs": 29
+        "hint": "1 serving ~ 400gr",
+        "calories": 173.5,
+        "protein": 10,
+        "fat": 5.55,
+        "carbs": 7.25
     },
     "pileshka_qhniq_grah": {
         "hint": "1 serving ~ 427gr",
@@ -138,5 +138,12 @@ NUTRITION_PER_100_GRAMS = {
         "protein": 9.83,
         "fat": 2.81,
         "carbs": 6.32
+    },
+    "pancakes_w_cheese_and_cottage": {
+        "hint": "",
+        "calories": 243,
+        "protein": 10,
+        "fat": 10,
+        "carbs": 27
     }
 }

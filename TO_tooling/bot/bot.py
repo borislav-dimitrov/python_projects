@@ -3,6 +3,8 @@ import win32api
 import win32con
 from PySide6 import QtCore
 
+pyautogui.PAUSE = 0.012
+
 
 class Bot:
     def __init__(self, timer: QtCore.QTimer):

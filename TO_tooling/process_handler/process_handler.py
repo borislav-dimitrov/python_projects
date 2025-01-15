@@ -17,9 +17,11 @@ class ProcessHandler:
         self._current_game_process: Process | None = None
 
         self._mem_reader = MemReader()
-        self._gather_game_processes_info()
+        self._update_game_processes_info()
 
-    def on_tick(self, game_hwnd: int, update_hp_mp_callback: Callable) -> None:
+    def on_tick(self, game_hwnd: int) -> None:
+        self._update_game_processes_info()
+
         if not game_hwnd:
             return
 
@@ -29,9 +31,7 @@ class ProcessHandler:
             self._current_game_process = selected_process
             self._mem_reader.set_current_process(self._current_game_process.pid)
 
-        update_hp_mp_callback(self._mem_reader.get_hp_mp())
-
-    def _gather_game_processes_info(self) -> None:
+    def _update_game_processes_info(self) -> None:
         for proc in psutil.process_iter():
             if proc.name() == self._game_process_name:
                 self._game_processes.append(Process(pid=proc.pid, process_name=proc.name()))
@@ -67,3 +67,11 @@ class ProcessHandler:
     @property
     def games(self) -> list[Process]:
         return self._game_processes
+
+    @property
+    def hp_mp(self) -> list:
+        return self._mem_reader.get_hp_mp()
+
+    @property
+    def target(self) -> str:
+        return self._mem_reader.get_target_name()

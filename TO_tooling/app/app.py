@@ -119,7 +119,9 @@ class App(QtWidgets.QApplication):
             return
 
         game_hwnd = int(self._select_game_process_combo.currentText().split(' | ')[-1])
-        self._process_handler.on_tick(game_hwnd, self._update_hp_mp)
+        self._process_handler.on_tick(game_hwnd)
+        self._update_hp_mp(self._process_handler.hp_mp)
+        print(self._process_handler.target)
 
     def _update_hp_mp(self, hp_mp: tuple[int, int]) -> None:
         if hp_mp[0] != -1:
